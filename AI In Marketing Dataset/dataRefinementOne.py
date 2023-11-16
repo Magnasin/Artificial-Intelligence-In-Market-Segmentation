@@ -41,7 +41,6 @@ sales_df.isnull().sum()
 # Country would represent the order grographical information.
 # Also we can drop city, address1, phone number, contact_name, contact last_name and contact first_name since they are not required for the analysis
 
-
 """MINI CHALLENGE #3:
 - How many unique values exist in 'country'?
 - How many unique product codes and product lines do we have?
