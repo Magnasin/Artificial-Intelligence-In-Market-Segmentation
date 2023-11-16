@@ -12,19 +12,28 @@ sales_df = pd.read_csv('AI In Marketing Dataset\sales_data_sample.csv', encoding
 sales_df_group = sales_df.groupby(by = "ORDERDATE").sum()
 sales_df_group
 
+# Convert ORDERDATE to datetime format
+sales_df['ORDERDATE'] = pd.to_datetime(sales_df['ORDERDATE'])
 
+# Extract month from ORDERDATE and create 'Month' column
+sales_df['Month'] = sales_df['ORDERDATE'].dt.month_name()
 
-"""MINI CHALLENGE #6:
-- Based on the data, When does the sales generally peak (which month)?  
-- Support your answer with visualizations/plots
-"""
+# Group by month and sum the sales
+sales_by_month = sales_df.groupby('Month')['SALES'].sum().reset_index()
 
-fig = px.line(x = sales_df_group.index, y = sales_df_group.SALES, title = 'Sales')
+# Visualize the sales by month
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Month', y='SALES', data=sales_by_month, palette='viridis')
+plt.title('Monthly Sales')
+plt.xlabel('Month')
+plt.ylabel('Total Sales')
+plt.show()
+
+# Interactive plot using Plotly Express
+fig = px.bar(sales_by_month, x='Month', y='SALES', labels={'SALES': 'Total Sales'})
+fig.update_layout(title='Monthly Sales', xaxis_title='Month', yaxis_title='Total Sales')
 fig.show()
 
-# We can drop 'ORDERDATE' and keep the rest of the date-related data such as 'MONTH'
-sales_df.drop("ORDERDATE", axis = 1, inplace = True)
-sales_df.shape
 
 """MINI CHALLENGE #7:
 - Plot the correlation matrix between variables
